@@ -30,16 +30,6 @@ The full source code, including training and evaluation scripts, will be release
 
 ## 📄 Citation
 
-If this project is useful for your research, please consider citing:
-
-```bibtex
-@article{sun2026mvoformer,
-  title     = {MVOFormer: Flow-Semantic Transformer for Robust Monocular Visual Odometry},
-  author    = {Sun, Shunwang and others},
-  journal   = {IEEE Robotics and Automation Letters (RA-L)},
-  year      = {2026}
-}
-```
 
 ---
 
