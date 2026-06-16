@@ -264,11 +264,9 @@ Quantitative comparison (ATE ↓) on four benchmarks.
 
 | Method | KITTI | TartanAir | TUM-RGBD | ETH3D-SLAM |
 |--------|:----:|:---------:|:--------:|:----------:|
-| **Multi-Frame (Optimization)** | | | | |
 | ORB-SLAM3 [1] ‡ | — | 14.38 | — | — |
 | DROID-VO [7] ‡ | 54.19 | 0.58 | 0.116 | 0.238 |
 | DPVO [23] ‡ | 53.61 | 0.21 | 0.107 | 0.203 |
-| **Frame-to-Frame (Learning)** | | | | |
 | TartanVO [6] † | 33.94 | 3.34 | 0.320 | 0.421 |
 | DytanVO [15] † | 24.96 | 3.90 | 0.259 | 0.364 |
 | **MVOFormer (Ours) †** | **19.61** | **1.36** | **0.187** | **0.276** |
