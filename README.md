@@ -107,7 +107,7 @@ Optical flow can be pre-computed using [SEA-RAFT](https://github.com/princeton-v
 
 ### Stage 1: Flow-Only Pretraining
 
-The first stage trains MVOFormer using **optical flow only** (without semantic features) for 200 epochs. This stage learns basic motion understanding.
+The first stage trains MVOFormer using **ground-truth optical flow only** (without semantic features) for 200 epochs. This stage learns basic motion understanding.
 
 ```bash
 CUDA_VISIBLE_DEVICES=0 python train.py --mode train \
@@ -120,7 +120,7 @@ After training, rename the output checkpoint to `Model/stage_1_model.pth`.
 
 ### Stage 2: Full Training with Semantics
 
-The second stage loads the flow-only checkpoint and adds DINOv3 semantic features, training for 50 epochs:
+The second stage loads the flow-only checkpoint and adds DINOv3 semantic features, training for 50 epochs. The optical flow used in this stage is **pre-computed by SEA-RAFT** and saved locally (under `{split}_flow_sea/`), rather than ground-truth flow.
 
 ```bash
 CUDA_VISIBLE_DEVICES=0 python train.py --mode train \
