@@ -5,7 +5,7 @@
 </p>
 
 <p align="center">
-  Jituo Li, <a href="https://sun-shun.github.io/">Shunwang Sun</a>, Jialu Zhang, Xinqi Liu, Jinyao Hu, Zhicheng Lu, Sajad Saeedi, Guodong Lu
+  Jituo Li, <a href="https://sun-shun.github.io/">Shunwang Sun</a>, Jialu Zhang, <a href="https://www.liuxinqi.cn/">Xinqi Liu</a>, Jinyao Hu, Zhicheng Lu, <a href="https://sajad-saeedi.ca/">Sajad Saeedi</a>, Guodong Lu
 </p>
 
 <p align="center">
