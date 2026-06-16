@@ -271,6 +271,8 @@ Quantitative comparison (ATE ↓) on four benchmarks.
 | DytanVO [15] † | 24.96 | 3.90 | 0.259 | 0.364 |
 | **MVOFormer (Ours) †** | **19.61** | **1.36** | **0.187** | **0.276** |
 
+‡ Multi-Frame methods (with global optimization / loop closure) &emsp; † Frame-to-Frame learning-based methods
+
 ---
 
 ## Citation
