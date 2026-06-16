@@ -29,6 +29,8 @@ In this work, we propose **MVOFormer**, a novel transformer framework for robust
   <img src="assets/MVOFormer.gif" alt="MVOFormer Demo" width="80%">
   <br>
   <a href="assets/MVOFormer.mp4">⬇ Download Video (MP4)</a>
+  <br>
+  <em>Demo data from <a href="https://moyangli00.github.io/droid-w/">DROID-W</a></em>
 </p>
 
 ---
