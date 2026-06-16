@@ -256,6 +256,45 @@ Key parameters in `Configs/MVOFormer.yaml`:
 
 ---
 
+## Results
+
+### KITTI Odometry (ATE ↓)
+
+| Method | Avg |
+|--------|:---:|
+| ORB-SLAM3 [1] ‡ | — |
+| DROID-VO [7] ‡ | 54.19 |
+| DPVO [23] ‡ | 53.61 |
+| TartanVO [6] † | 33.94 |
+| DytanVO [15] † | 24.96 |
+| **MVOFormer (Ours) †** | **19.61** |
+
+### TartanAir (ATE ↓)
+
+| Method | Avg |
+|--------|:---:|
+| ORB-SLAM3 [1] ‡ | 14.38 |
+| DROID-VO [7] ‡ | 0.58 |
+| DPVO [23] ‡ | 0.21 |
+| TartanVO [6] † | 3.34 |
+| DytanVO [15] † | 3.90 |
+| **MVOFormer (Ours) †** | **1.36** |
+
+### TUM-RGBD & ETH3D-SLAM (ATE ↓)
+
+| Method | TUM-RGBD | ETH3D-SLAM |
+|--------|:--------:|:----------:|
+| ORB-SLAM3 [1] ‡ | — | — |
+| DROID-VO [7] ‡ | 0.116 | 0.238 |
+| DPVO [23] ‡ | 0.107 | 0.203 |
+| TartanVO [6] † | 0.320 | 0.421 |
+| DytanVO [15] † | 0.259 | 0.364 |
+| **MVOFormer (Ours) †** | **0.187** | **0.276** |
+
+‡ uses global optimization / loop closure &emsp; † learning-based frame-to-frame
+
+---
+
 ## Citation
 
 ```bibtex
