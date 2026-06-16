@@ -264,14 +264,26 @@ Quantitative comparison (ATE ↓) on four benchmarks.
 
 | Method | KITTI | TartanAir | TUM-RGBD | ETH3D-SLAM |
 |--------|:----:|:---------:|:--------:|:----------:|
-<tr><td colspan="5">**Multi-Frame (Optimization)**</td></tr>
 | ORB-SLAM3 [1] ‡ | — | 14.38 | — | — |
 | DROID-VO [7] ‡ | 54.19 | 0.58 | 0.116 | 0.238 |
 | DPVO [23] ‡ | 53.61 | 0.21 | 0.107 | 0.203 |
-<tr><td colspan="5">**Frame-to-Frame (Learning)**</td></tr>
 | TartanVO [6] † | 33.94 | 3.34 | 0.320 | 0.421 |
 | DytanVO [15] † | 24.96 | 3.90 | 0.259 | 0.364 |
 | **MVOFormer (Ours) †** | **19.61** | **1.36** | **0.187** | **0.276** |
+
+---
+
+## Citation
+
+```bibtex
+@article{li2026mvoformer,
+  author    = {Jituo Li and Shunwang Sun and Jialu Zhang and Xinqi Liu and Jinyao Hu and Zhicheng Lu and Sajad Saeedi and Guodong Lu},
+  title     = {MVOFormer: Flow-Semantic Transformer for Robust Monocular Visual Odometry},
+  journal   = {arXiv preprint arXiv:2606.16474},
+  year      = {2026},
+  url       = {https://arxiv.org/abs/2606.16474}
+}
+```
 
 ---
 
@@ -297,20 +309,6 @@ Quantitative comparison (ATE ↓) on four benchmarks.
   author    = {Zhang, Jialu and Sun, Shunwang and Xue, Tingxi},
   year      = {2025},
   howpublished = {\url{https://github.com/Sun-Shun/OpenTartanVO}}
-}
-```
-
----
-
-## Citation
-
-```bibtex
-@article{li2026mvoformer,
-  author    = {Jituo Li and Shunwang Sun and Jialu Zhang and Xinqi Liu and Jinyao Hu and Zhicheng Lu and Sajad Saeedi and Guodong Lu},
-  title     = {MVOFormer: Flow-Semantic Transformer for Robust Monocular Visual Odometry},
-  journal   = {arXiv preprint arXiv:2606.16474},
-  year      = {2026},
-  url       = {https://arxiv.org/abs/2606.16474}
 }
 ```
 
