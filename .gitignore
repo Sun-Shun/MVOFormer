@@ -44,6 +44,9 @@ Outputs/
 runs/
 *events.out.tfevents*
 
+# Assets (large demo media, clone via git lfs or download separately)
+assets/
+
 # External model weights directories
 Network/dinov3/weights/
 Network/SeaRAFT/models/
