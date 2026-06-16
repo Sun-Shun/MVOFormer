@@ -26,9 +26,7 @@
 In this work, we propose **MVOFormer**, a novel transformer framework for robust monocular visual odometry. Our architecture features a **Flow-Semantic Dual Branch Encoder** that synergizes dense geometric motion cues with object-centric semantic priors, explicitly distinguishing static structures from dynamic distractors. These representations are then fused by an **Iterative Multimodal Decoder**, enabling coarse-to-fine pose refinement while dynamically suppressing attention on unreliable regions.
 
 <p align="center">
-  <video controls width="80%">
-    <source src="https://github.com/Sun-Shun/MVOFormer/raw/main/assets/MVOFormer.mp4" type="video/mp4">
-  </video>
+  <img src="assets/MVOFormer.gif" alt="MVOFormer Demo" width="80%">
 </p>
 
 ---
@@ -112,12 +110,10 @@ Optical flow can be pre-computed using [SEA-RAFT](https://github.com/princeton-v
 The first stage trains MVOFormer using **optical flow only** (without semantic features) for 200 epochs. This stage learns basic motion understanding.
 
 ```bash
-# Modify Configs/MVOFormer.yaml:
-#   model.is_Semantics: False
-#   trainer.max_epoch: 200
-#   trainer.pretrain_model: null    # no pretrain in stage 1
-
-CUDA_VISIBLE_DEVICES=0 python train.py --mode train --config Configs/MVOFormer.yaml
+CUDA_VISIBLE_DEVICES=0 python train.py --mode train \
+  --set model.is_Semantics=False \
+  --set trainer.max_epoch=200 \
+  --set trainer.pretrain_model=None
 ```
 
 After training, rename the output checkpoint to `Model/stage_1_model.pth`.
@@ -127,12 +123,10 @@ After training, rename the output checkpoint to `Model/stage_1_model.pth`.
 The second stage loads the flow-only checkpoint and adds DINOv3 semantic features, training for 50 epochs:
 
 ```bash
-# Ensure Configs/MVOFormer.yaml has:
-#   model.is_Semantics: True
-#   trainer.pretrain_model: ./Model/stage_1_model.pth
-#   trainer.max_epoch: 50
-
-CUDA_VISIBLE_DEVICES=0 python train.py --mode train --config Configs/MVOFormer.yaml
+CUDA_VISIBLE_DEVICES=0 python train.py --mode train \
+  --set model.is_Semantics=True \
+  --set trainer.pretrain_model=./Model/stage_1_model.pth \
+  --set trainer.max_epoch=50
 ```
 
 ### Training Details

@@ -26,9 +26,45 @@ from Network.Model.model import build
 from torch.utils.tensorboard import SummaryWriter
 
 
-def main(config, mode='train', checkpoint_epoch=None):
+def deep_set(cfg, key, value):
+    """Set nested config value from a dot-separated key path (e.g. 'model.is_Semantics')."""
+    keys = key.split('.')
+    for k in keys[:-1]:
+        cfg = cfg[k]
+    cfg[keys[-1]] = value
+
+
+def parse_override(value):
+    """Parse a string value into bool/int/float/None if possible."""
+    if value.lower() in ('true', 'yes'):
+        return True
+    if value.lower() in ('false', 'no'):
+        return False
+    if value.lower() == 'none':
+        return None
+    try:
+        return int(value)
+    except ValueError:
+        pass
+    try:
+        return float(value)
+    except ValueError:
+        pass
+    return value
+
+
+def main(config, mode='train', checkpoint_epoch=None, overrides=None):
     assert os.path.exists(config)
     cfg = yaml.load(open(config, 'r'), Loader=yaml.Loader)
+
+    # Apply command-line overrides
+    if overrides:
+        for kv in overrides:
+            if '=' not in kv:
+                continue
+            key, value = kv.split('=', 1)
+            value = parse_override(value)
+            deep_set(cfg, key, value)
 
     # Single GPU device selection
     if torch.cuda.is_available():
@@ -148,5 +184,7 @@ if __name__ == '__main__':
                         help='Run mode: train or eval (evaluation with GT poses)')
     parser.add_argument('--checkpoint', type=int, default=None,
                         help='Checkpoint epoch to evaluate (only for eval mode)')
+    parser.add_argument('--set', action='append', dest='overrides', default=None,
+                        help='Override config key=value (e.g. --set model.is_Semantics=False)')
     args = parser.parse_args()
-    main(args.config, mode=args.mode, checkpoint_epoch=args.checkpoint)
+    main(args.config, mode=args.mode, checkpoint_epoch=args.checkpoint, overrides=args.overrides)
