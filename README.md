@@ -262,12 +262,6 @@ Key parameters in `Configs/MVOFormer.yaml`:
 
 ## Results
 
-<p align="center">
-  <img src="assets/kitti_trajectories.png" alt="KITTI Trajectories" width="90%">
-  <br>
-  <em>Qualitative results on KITTI Odometry sequences 00–10.</em>
-</p>
-
 Quantitative comparison (ATE ↓) on four benchmarks.
 
 | Method | KITTI | TartanAir | TUM-RGBD | ETH3D-SLAM |
@@ -280,6 +274,12 @@ Quantitative comparison (ATE ↓) on four benchmarks.
 | **MVOFormer (Ours) †** | **19.61** | **1.36** | **0.187** | **0.276** |
 
 ‡ Multi-Frame methods (with global optimization / loop closure) &emsp; † Frame-to-Frame learning-based methods
+
+<p align="center">
+  <img src="assets/kitti_trajectories.png" alt="KITTI Trajectories" width="90%">
+  <br>
+  <em>Qualitative results on KITTI Odometry sequences 00–10.</em>
+</p>
 
 ---
 
