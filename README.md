@@ -92,7 +92,7 @@ MVOFormer/
 
 ## Dataset Preparation
 
-The code supports **TartanAir**, **TartanAir-Shibuya**, **KITTI**, **TUM-RGBD**, **Bonn**, **EuRoC**, and **ETH3D-SLAM** datasets.
+The code supports **[TartanAir](https://theairlab.org/tartanair-dataset/)**, **[TartanAir-Shibuya](https://github.com/haleqiu/tartanair-shibuya)**, **KITTI**, **TUM-RGBD**, **Bonn**, **EuRoC**, and **ETH3D-SLAM** datasets.
 
 Each dataset should be organized as:
 
@@ -104,6 +104,15 @@ dataset/
 ```
 
 Optical flow can be pre-computed using [SEA-RAFT](https://github.com/princeton-vl/SEA-RAFT). Update `Configs/MVOFormer.yaml` with your dataset paths.
+
+### Pretrained Model Weights
+
+| Model | Source | Placement |
+|-------|--------|-----------|
+| DINOv3 backbone | [facebookresearch/dinov3](https://github.com/facebookresearch/dinov3) | `Network/dinov3/weights/` |
+| SEA-RAFT optical flow | [princeton-vl/SEA-RAFT](https://github.com/princeton-vl/SEA-RAFT) | `Network/SeaRAFT/models/` |
+| Stage 1 (flow-only) | Download link TBD | `Model/stage_1_model.pth` |
+| MVOFormer (full) | Download link TBD | `Model/MVOFormer.pth` |
 
 ---
 
