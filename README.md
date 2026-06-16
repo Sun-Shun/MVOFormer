@@ -16,7 +16,7 @@
 
 <p align="center">
   <a href="assets/MVOFormer.pdf">
-    <img src="https://img.shields.io/badge/Paper-PDF-red?style=for-the-badge" alt="Paper PDF">
+    <img src="assets/MVOFormer_preview.png" alt="MVOFormer Paper" width="80%">
   </a>
 </p>
 
