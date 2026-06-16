@@ -91,8 +91,6 @@ MVOFormer/
 ├── Outputs/                   # Checkpoints and logs (gitignored)
 ├── train.py                   # Training & evaluation script
 ├── infer.py                   # Inference script (no GT poses needed)
-├── requirements.txt
-└── LICENSE
 ```
 
 ---
