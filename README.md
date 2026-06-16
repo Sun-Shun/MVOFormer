@@ -10,9 +10,14 @@
   </a>
 </p>
 
+<p align="center">
+  <a href="assets/MVOFormer.mp4">🎬 Video Demo</a> &nbsp;|&nbsp;
+  <a href="assets/MVOFormer.pdf">📄 Paper PDF</a>
+</p>
+
 ---
 
-## 📖 Abstract
+## Abstract
 
 Monocular visual odometry (MVO) is foundational to autonomous navigation and robotic localization. However, existing learning-based MVO approaches often struggle with either a lack of interpretable, complementary features or overly complex multi-stage architectures. These limitations inherently restrict their robustness and cross-domain generalization.
 
@@ -22,18 +27,237 @@ Extensive evaluations demonstrate that, without any target-domain fine-tuning, M
 
 ---
 
-## 🚀 Code Coming Soon
+## Installation
 
-The full source code, including training and evaluation scripts, will be released. Stay tuned!
+```bash
+# Create conda environment
+conda create -n mvoformer python=3.11 -y
+conda activate mvoformer
+
+# Install PyTorch (CUDA 12.x)
+pip install torch torchvision --index-url https://download.pytorch.org/whl/cu121
+
+# Install dependencies
+pip install -r requirements.txt
+```
+
+The Deformable Attention CUDA ops are pre-compiled for Python 3.11. If you encounter import errors, recompile:
+
+```bash
+cd Network/Deformable_ops
+bash make.sh
+cd ../..
+```
 
 ---
 
-## 📄 Citation
+## Repository Structure
 
+```
+MVOFormer/
+├── assets/                    # Demo video and paper PDF
+│   ├── MVOFormer.mp4
+│   └── MVOFormer.pdf
+├── Configs/
+│   └── MVOFormer.yaml         # Main configuration file
+├── Model/                     # Pretrained model checkpoints
+│   ├── stage_1_model.pth      # Flow-only pretrained (200 epochs)
+│   └── MVOFormer.pth          # Final model (50 epochs)
+├── Network/
+│   ├── Deformable_ops/        # Deformable attention CUDA ops
+│   ├── Model/                 # MVOFormer model (transformer, backbone, etc.)
+│   ├── SeaRAFT/               # SeaRAFT optical flow model
+│   └── dinov3/                # DINOv3 visual-semantic backbone
+├── Tool/
+│   ├── Datasets/              # Dataset loading & augmentation
+│   ├── Evaluator/             # Trajectory evaluation (ATE, RPE, KITTI)
+│   ├── Train_Test/            # Trainer, Tester, and Inference modules
+│   └── Utils/                 # Utilities (logging, seeding, transforms)
+├── Outputs/                   # Checkpoints and logs (gitignored)
+├── train.py                   # Training & evaluation script
+├── infer.py                   # Inference script (no GT poses needed)
+├── requirements.txt
+└── LICENSE
+```
 
 ---
 
-## 📄 License
+## Dataset Preparation
+
+The code supports **TartanAir**, **TartanAir-Shibuya**, **KITTI**, **TUM-RGBD**, **Bonn**, **EuRoC**, and **ETH3D-SLAM** datasets.
+
+Each dataset should be organized as:
+
+```
+dataset/
+  {split}_img/        # RGB images
+  {split}_flow_sea/   # Pre-computed optical flow (.npy)
+  {split}_pose/       # Ground-truth poses (.txt, 7-DoF: xyz + quaternion)
+```
+
+Optical flow can be pre-computed using [SEA-RAFT](https://github.com/princeton-vl/SEA-RAFT). Update `Configs/MVOFormer.yaml` with your dataset paths.
+
+---
+
+## Training Pipeline
+
+### Stage 1: Flow-Only Pretraining
+
+The first stage trains MVOFormer using **optical flow only** (without semantic features) for 200 epochs. This stage learns basic motion understanding.
+
+```bash
+# Modify Configs/MVOFormer.yaml:
+#   model.is_Semantics: False
+#   trainer.max_epoch: 200
+#   trainer.pretrain_model: null    # no pretrain in stage 1
+
+CUDA_VISIBLE_DEVICES=0 python train.py --mode train --config Configs/MVOFormer.yaml
+```
+
+After training, rename the output checkpoint to `Model/stage_1_model.pth`.
+
+### Stage 2: Full Training with Semantics
+
+The second stage loads the flow-only checkpoint and adds DINOv3 semantic features, training for 50 epochs:
+
+```bash
+# Ensure Configs/MVOFormer.yaml has:
+#   model.is_Semantics: True
+#   trainer.pretrain_model: ./Model/stage_1_model.pth
+#   trainer.max_epoch: 50
+
+CUDA_VISIBLE_DEVICES=0 python train.py --mode train --config Configs/MVOFormer.yaml
+```
+
+### Training Details
+
+| Component | Description |
+|-----------|-------------|
+| **Model** | MVOFormer with DINOv3 backbone (81.98M params, 52.53M trainable) |
+| **Optimizer** | AdamW (lr=5e-5, weight_decay=1e-4) |
+| **LR Schedule** | Cosine decay with 3-epoch linear warmup (init_lr=1e-5, min_lr=1e-7) |
+| **Batch Size** | 64 |
+| **Mixed Precision** | BF16 (automatic if GPU supports it) |
+| **Gradient Clipping** | max_norm=1.0 |
+| **Loss** | Weighted translation + rotation regression with uncertainty learning |
+| **Augmentation** | Spatial random crop (scale up to 2.5×), color jitter (brightness/contrast/saturation) |
+| **Datasets** | TartanAir (305K samples) + TartanAir-Shibuya (6.6K ×10 repeat = 311K total) |
+
+### Checkpoints
+
+During training, the model saves:
+- `checkpoint_epoch_{N}.pth` — every `save_frequency` epochs (default: 5)
+- `checkpoint_best.pth` — epoch with lowest validation loss
+- `checkpoint_final.pth` — latest epoch
+
+DINOv3 backbone and `delta_ref_point` (when `with_pose_refine=False`) are frozen during training.
+
+---
+
+## Evaluation Pipeline
+
+### Evaluation with Ground-Truth Poses
+
+Evaluate a specific checkpoint on test datasets:
+
+```bash
+# Evaluate checkpoint at epoch 50
+CUDA_VISIBLE_DEVICES=0 python train.py --mode eval --checkpoint 50
+
+# Custom config
+python train.py --mode eval --config Configs/MVOFormer.yaml --checkpoint 50
+```
+
+The evaluation:
+1. Loads the specified checkpoint (`checkpoint_epoch_50.pth` in the output directory).
+2. Iterates over all test sequences defined in `cfg['dataset']['test_datasets']`.
+3. For each sequence, runs the model frame-by-frame, computes relative poses.
+4. Evaluates trajectory using **ATE** (Absolute Trajectory Error), **scale**, and **KITTI score**.
+5. Saves trajectory plots as `.png` and estimated poses as `.txt` in `Outputs/results/`.
+6. Reports mean ATE per dataset and overall average.
+
+### Multi-Checkpoint Sweep
+
+```bash
+# Set tester.mode: all in config to sweep all checkpoints
+```
+
+---
+
+## Inference Pipeline (No Ground-Truth Poses)
+
+For inference on new data without ground-truth poses:
+
+```bash
+# Single checkpoint
+python infer.py --config Configs/MVOFormer.yaml --checkpoint_epoch 50 --mode single
+
+# Explicit checkpoint path
+python infer.py --config Configs/MVOFormer.yaml --checkpoint ./Model/MVOFormer.pth --mode single
+
+# Sweep all checkpoints in output directory
+python infer.py --config Configs/MVOFormer.yaml --mode all
+```
+
+The inference pipeline:
+1. Builds model and loads checkpoint.
+2. Warms up GPU with a dummy forward pass.
+3. For each sequence, resets the DINOv3 RNN state, runs inference with CUDA timing.
+4. Converts relative motions to absolute trajectory.
+5. Plots and saves trajectory as `.png` and estimated poses as `.txt` in `Outputs/results/`.
+6. Reports per-frame average inference time and FPS.
+
+---
+
+## Configuration Reference
+
+Key parameters in `Configs/MVOFormer.yaml`:
+
+| Parameter | Default | Description |
+|-----------|---------|-------------|
+| `model.DINOv3_version` | `smallplus` | DINOv3 backbone variant |
+| `model.num_queries` | `100` | Number of transformer queries |
+| `model.enc_layers` | `3` | Encoder layers |
+| `model.dec_layers` | `3` | Decoder layers |
+| `model.is_Semantics` | `True` | Enable DINOv3 semantic features |
+| `model.with_pose_refine` | `False` | Enable pose refinement branch |
+| `dataset.batch_size` | `64` | Training batch size |
+| `trainer.max_epoch` | `50` | Total training epochs |
+| `trainer.amp_dtype` | `bf16` | Mixed precision (bf16/fp16/fp32) |
+| `trainer.pretrain_model` | `./Model/stage_1_model.pth` | Flow-only pretrained weights |
+| `trainer.save_frequency` | `5` | Save checkpoint every N epochs |
+| `optimizer.lr` | `0.00005` | Learning rate |
+| `inference.mode` | `single` | Inference mode (single/all) |
+| `inference.datasets` | — | Datasets for inference (same format as test_datasets) |
+
+### Supported Dataset Types
+
+| Type | Intrinsics (fx, fy, cx, cy) |
+|------|-----------------------------|
+| `tartanair` | 320.0, 320.0, 320.0, 240.0 |
+| `tartanair_shibuya` | 772.55, 772.55, 320.0, 180.0 |
+| `kitti` | 707.09, 707.09, 601.89, 183.11 |
+| `euroc` | 458.65, 457.30, 367.22, 248.38 |
+| `tum` | 517.3, 516.5, 318.6, 255.3 |
+| `bonn` | 517.3, 516.5, 318.6, 255.3 |
+| `ETH3D` | 726.21, 726.21, 359.20, 202.47 |
+
+---
+
+## Citation
+
+```bibtex
+@article{mvoformer2026,
+  title={MVOFormer: Flow-Semantic Transformer for Robust Monocular Visual Odometry},
+  author={Sun, Shun and others},
+  journal={IEEE Robotics and Automation Letters},
+  year={2026}
+}
+```
+
+---
+
+## License
 
 This project is licensed under the **BSD 3-Clause License** — see the [LICENSE](LICENSE) file for details.
 

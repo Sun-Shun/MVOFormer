@@ -1,0 +1,31 @@
+# MVOFormer Dependencies
+# Tested with Python 3.11, CUDA 12.x, dinov3 conda environment
+
+# Core DL framework
+torch>=2.5.0
+torchvision>=0.20.0
+
+# Scientific computing
+numpy
+scipy>=1.12.0
+
+# Image processing
+opencv-python>=4.8.0
+pillow>=10.0.0
+
+# Visualization
+matplotlib>=3.8.0
+seaborn>=0.13.0
+
+# Logging and monitoring
+tensorboard>=2.15.0
+
+# Configuration
+pyyaml>=6.0
+omegaconf>=2.3.0
+
+# Progress bars
+tqdm>=4.65.0
+
+# HuggingFace Hub (for SeaRAFT optical flow model)
+huggingface_hub>=0.25.0

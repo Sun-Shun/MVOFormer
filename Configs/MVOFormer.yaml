@@ -1,0 +1,158 @@
+random_seed: 666
+
+dataset:
+  type: &dataset_type 'tartanair'
+  pose_std: [0.13, 0.13, 0.13, 0.013, 0.013, 0.013]
+
+  train_split: 'train'
+  test_split:  'test'
+
+  batch_size: 64
+
+  train_ratio: 1
+
+  augmentation:
+    use_v2_crop:  true
+    keep_center:  false
+    fix_ratio:    false
+    max_scale:    2.5
+    color_jitter:
+      brightness: 0.2
+      contrast:   0.2
+      saturation: 0.1
+
+  # Multi-dataset training configuration
+  # Each entry requires: type, path, repeat
+  train_datasets:
+    - type: tartanair
+      path: /media/kemove/a3639af2-2d4c-4686-a30e-5bb745f1dde5/ssw/VOdataset/tartanair/train
+      repeat: 1
+    - type: tartanair_shibuya
+      path: /media/kemove/a3639af2-2d4c-4686-a30e-5bb745f1dde5/ssw/VOdataset/tartanair_shibuya
+      repeat: 10
+
+  # Multi-dataset testing configuration
+  # Supported types: tartanair, kitti, bonn, tum, ETH3D, euroc
+  test_datasets:
+    - type: tartanair
+      path: /media/kemove/a3639af2-2d4c-4686-a30e-5bb745f1dde5/ssw/VOdataset/tartanair/val
+    - type: kitti
+      path: /media/kemove/3e010bdd-f5c9-4abc-8bd3-c6c2a71aab96/ssw_data/VO/kitti
+    # - type: bonn
+    #   path: /media/kemove/3e010bdd-f5c9-4abc-8bd3-c6c2a71aab96/ssw_data/VO/bonn
+    # - type: tum
+    #   path: /media/kemove/3e010bdd-f5c9-4abc-8bd3-c6c2a71aab96/ssw_data/VO/tum
+    # - type: ETH3D
+    #   path: /media/kemove/3e010bdd-f5c9-4abc-8bd3-c6c2a71aab96/ssw_data/VO/ETH3D-SLAM
+    # - type: euroc
+    #   path: /media/kemove/3e010bdd-f5c9-4abc-8bd3-c6c2a71aab96/ssw_data/VO/euroc
+model_name: 'MVOFormer'
+
+model:
+  device: 'cuda'
+  is_Semantics: True
+  DINOv3_version: 'smallplus'
+  DINOv3_weights_dir: 'Network/dinov3/weights/'
+  backbone: 'resnet50'
+  train_backbone: True
+  num_feature_levels: 4
+  dilation: False
+  position_embedding: 'sine'
+  masks: False
+  with_pose_refine: False
+  init_pose: False
+  enc_layers: 3
+  dec_layers: 3
+  hidden_dim: 256
+  dim_feedforward: 1024
+  dropout: 0.1
+  nheads: 8
+  num_queries: 100
+  enc_n_points: 4
+  dec_n_points: 4
+  aux_loss: True
+  trans_loss_coef: 0.5
+  rot_loss_coef: 0.5
+  loss_uncertainty: 0.3
+  uncertainty_regularizer_weight: 0.8
+
+  # SeaRAFT optical flow model for real-time inference
+  SeaRAFT_model: 'Network/SeaRAFT/models/Tartan-C-T-TSKH-kitti432x960-S.pth'
+
+optimizer:
+  type: 'adamw'
+  lr: 0.00005
+  weight_decay: 0.0001
+
+lr_scheduler:
+  type: 'cos'
+  warmup: True
+  warmup_epochs:  3
+  warmup_init_lr: 1.0e-5
+  min_lr:         1.0e-7
+  max_epoch:      50
+
+trainer:
+  amp_dtype: bf16
+  max_epoch: 50
+  save_frequency: 5
+  pretrain_model: ./Model/stage_1_model.pth
+  # resume_model: ./Outputs/MVOFormer/checkpoint_final.pth
+  save_path: 'Outputs/'
+  save_all: True
+  num_patterns: 0
+
+  # DataLoader memory optimization parameters
+  num_workers:        8
+  prefetch_factor:    1       # Default 2 -> 1 reduces prefetch buffer by half
+  pin_memory_train:   false   # Disable page-locked memory to save RAM
+  val_num_workers:    2
+  val_batch_size:     64
+
+  scale: 4
+  step: 1
+  grad_clip: 1.0
+
+tester:
+  type: *dataset_type
+  plot_attn_weight: False
+  mask_clamp_max: 3.0
+  mask_unc_min: 0.1
+  test_batch_size: 1
+  test_step: 1
+  mode: all
+  checkpoint: 50
+
+# ────────────────────────────────────────────────────────────────────────────
+# Inference configuration (no ground-truth poses required)
+# Used by: infer.py
+# ────────────────────────────────────────────────────────────────────────────
+inference:
+  # Path to a trained model checkpoint (.pth)
+  checkpoint: ./Model/MVOFormer.pth
+
+  # Inference mode: 'single' (one checkpoint) or 'all' (sweep all saved epochs)
+  mode: single
+
+  # Checkpoint epoch number (only used when mode == 'single')
+  checkpoint_epoch: 50
+
+  # Batch size per GPU during inference
+  batch_size: 1
+
+  # DataLoader workers for inference (lower = less RAM)
+  num_workers: 2
+
+  # Datasets to run inference on (same format as train/test datasets)
+  # Supported types: tartanair, kitti, bonn, tum, ETH3D, euroc
+  datasets:
+    - type: bonn
+      path: /media/kemove/3e010bdd-f5c9-4abc-8bd3-c6c2a71aab96/ssw_data/VO/bonn
+    # - type: kitti
+    #   path: /media/kemove/3e010bdd-f5c9-4abc-8bd3-c6c2a71aab96/ssw_data/VO/kitti
+    # - type: tum
+    #   path: /media/kemove/3e010bdd-f5c9-4abc-8bd3-c6c2a71aab96/ssw_data/VO/tum
+    # - type: ETH3D
+    #   path: /media/kemove/3e010bdd-f5c9-4abc-8bd3-c6c2a71aab96/ssw_data/VO/ETH3D-SLAM
+    # - type: euroc
+    #   path: /media/kemove/3e010bdd-f5c9-4abc-8bd3-c6c2a71aab96/ssw_data/VO/euroc

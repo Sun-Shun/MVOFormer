@@ -1,7 +1,50 @@
+# OS generated files
 .DS_Store
+Thumbs.db
+
+# Python
+__pycache__/
+*.py[cod]
+*.so
+*.egg-info/
+dist/
+build/
+
+# Large model weights and checkpoints (all directories)
+*.pth
+*.pt
+*.ckpt
+*.safetensors
+*.bin
+*.onnx
+*.h5
+*.hdf5
+*.pb
+*.weights
+*.index
+*.msgpack
+Outputs/
+
+# IDE / editor
+.vscode/
+.idea/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Logs
+*.log
+
+# PDFs and office files
 *.pdf
 *.xlsx
 ~$*
-review1/
-修改1/
-修改2/
+
+# TensorBoard
+runs/
+*events.out.tfevents*
+
+# External model weights directories
+Network/dinov3/weights/
+Network/SeaRAFT/models/
+Network/RAFT/pre_model/
