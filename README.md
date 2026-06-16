@@ -304,11 +304,12 @@ Quantitative comparison (ATE ↓) on four benchmarks. ‡ denotes methods with g
 ## Citation
 
 ```bibtex
-@article{mvoformer2026,
-  title={MVOFormer: Flow-Semantic Transformer for Robust Monocular Visual Odometry},
-  author={Sun, Shun and others},
-  journal={IEEE Robotics and Automation Letters},
-  year={2026}
+@article{li2026mvoformer,
+  author    = {Jituo Li and Shunwang Sun and Jialu Zhang and Xinqi Liu and Jinyao Hu and Zhicheng Lu and Sajad Saeedi and Guodong Lu},
+  title     = {MVOFormer: Flow-Semantic Transformer for Robust Monocular Visual Odometry},
+  journal   = {arXiv preprint arXiv:2606.16474},
+  year      = {2026},
+  url       = {https://arxiv.org/abs/2606.16474}
 }
 ```
 
