@@ -38,6 +38,12 @@ We also reproduce [TartanVO](https://github.com/Sun-Shun/OpenTartanVO) as a stro
   <em>Demo data from <a href="https://moyangli00.github.io/droid-w/">DROID-W</a></em>
 </p>
 
+<p align="center">
+  <img src="assets/kitti_trajectories.png" alt="KITTI Trajectories" width="90%">
+  <br>
+  <em>Qualitative results on KITTI Odometry sequences 00–10. Our method (MVOFormer) produces consistent trajectories across diverse driving scenarios without any target-domain fine-tuning.</em>
+</p>
+
 ---
 
 ## Installation
