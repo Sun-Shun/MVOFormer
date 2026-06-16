@@ -26,9 +26,7 @@
 In this work, we propose **MVOFormer**, a novel transformer framework for robust monocular visual odometry. Our architecture features a **Flow-Semantic Dual Branch Encoder** that synergizes dense geometric motion cues with object-centric semantic priors, explicitly distinguishing static structures from dynamic distractors. These representations are then fused by an **Iterative Multimodal Decoder**, enabling coarse-to-fine pose refinement while dynamically suppressing attention on unreliable regions.
 
 <p align="center">
-  <video controls width="80%" poster="assets/MVOFormer_poster.jpg">
-    <source src="https://github.com/Sun-Shun/MVOFormer/raw/main/assets/MVOFormer.mp4" type="video/mp4">
-  </video>
+  <img src="assets/MVOFormer.gif" alt="MVOFormer Demo" width="80%">
 </p>
 
 ---
