@@ -27,6 +27,8 @@ In this work, we propose **MVOFormer**, a novel transformer framework for robust
 
 <p align="center">
   <img src="assets/MVOFormer.gif" alt="MVOFormer Demo" width="80%">
+  <br>
+  <a href="assets/MVOFormer.mp4">⬇ Download Video (MP4)</a>
 </p>
 
 ---
