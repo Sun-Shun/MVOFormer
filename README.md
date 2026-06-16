@@ -201,20 +201,23 @@ The evaluation:
 For inference on new data without ground-truth poses:
 
 ```bash
+# Dataset inference (requires pre-computed flow in dataset folder)
 python infer.py --config Configs/MVOFormer.yaml --checkpoint ./Model/MVOFormer.pth --mode single
+
+# Raw image folder (on-the-fly flow computation via SEA-RAFT)
+python infer.py --img_folder /path/to/images --checkpoint ./Model/MVOFormer.pth \
+    --fx 320 --fy 320 --cx 320 --cy 240
+
+# Video file
+python infer.py --video /path/to/video.mp4 --checkpoint ./Model/MVOFormer.pth
 ```
 
 Other options:
 - `--checkpoint_epoch 50` — use `Outputs/{model_name}/checkpoint_epoch_50.pth` instead of `--checkpoint`
 - `--mode all` — sweep all `checkpoint_epoch_*.pth` in `Outputs/{model_name}/`
+- `--fx`, `--fy`, `--cx`, `--cy` — camera intrinsics (defaults: image center, fx=fy=320)
 
-The inference pipeline:
-1. Builds model and loads checkpoint.
-2. Warms up GPU with a dummy forward pass.
-3. For each sequence, resets the DINOv3 RNN state, runs inference with CUDA timing.
-4. Converts relative motions to absolute trajectory.
-5. Plots and saves trajectory as `.png` and estimated poses as `.txt` in `Outputs/results/`.
-6. Reports per-frame average inference time and FPS.
+When using `--img_folder` or `--video`, optical flow is computed on-the-fly using [SEA-RAFT](https://github.com/princeton-vl/SEA-RAFT). The trajectory is saved to `Outputs/{model_name}_{results}/trajectory.png`.
 
 ---
 
