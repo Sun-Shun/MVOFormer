@@ -31,7 +31,9 @@ In this work, we propose **MVOFormer**, a novel transformer framework for robust
 We also reproduce [TartanVO](https://github.com/Sun-Shun/OpenTartanVO) as a strong baseline and release the open-source implementation.
 
 <p align="center">
-  <video src="https://github.com/Sun-Shun/MVOFormer/raw/main/assets/MVOFormer.mp4" controls width="80%"></video>
+  <img src="assets/MVOFormer.gif" alt="MVOFormer Demo" width="80%">
+  <br>
+  <a href="assets/MVOFormer.mp4">⬇ Download Video (MP4)</a>
   <br>
   <em>Demo data from <a href="https://moyangli00.github.io/droid-w/">DROID-W</a></em>
 </p>
