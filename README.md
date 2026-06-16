@@ -11,19 +11,20 @@
 </p>
 
 <p align="center">
-  <a href="assets/MVOFormer.mp4">🎬 Video Demo</a> &nbsp;|&nbsp;
-  <a href="assets/MVOFormer.pdf">📄 Paper PDF</a>
+  <a href="assets/MVOFormer.pdf">
+    <img src="https://img.shields.io/badge/Paper-PDF-red?style=for-the-badge" alt="Paper PDF">
+  </a>
+</p>
+
+<p align="center">
+  <video src="assets/MVOFormer.mp4" controls width="80%"></video>
 </p>
 
 ---
 
 ## Abstract
 
-Monocular visual odometry (MVO) is foundational to autonomous navigation and robotic localization. However, existing learning-based MVO approaches often struggle with either a lack of interpretable, complementary features or overly complex multi-stage architectures. These limitations inherently restrict their robustness and cross-domain generalization.
-
 In this work, we propose **MVOFormer**, a novel transformer framework for robust monocular visual odometry. Our architecture features a **Flow-Semantic Dual Branch Encoder** that synergizes dense geometric motion cues with object-centric semantic priors, explicitly distinguishing static structures from dynamic distractors. These representations are then fused by an **Iterative Multimodal Decoder**, enabling coarse-to-fine pose refinement while dynamically suppressing attention on unreliable regions.
-
-Extensive evaluations demonstrate that, without any target-domain fine-tuning, MVOFormer achieves superior zero-shot generalization and robustness, significantly outperforming prior learning-based frame-to-frame methods across diverse benchmarks including TartanAir, KITTI, TUM-RGBD, and ETH3D-SLAM.
 
 ---
 
