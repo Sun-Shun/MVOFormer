@@ -175,12 +175,10 @@ During training, the model saves:
 Evaluate a specific checkpoint on test datasets:
 
 ```bash
-# Evaluate checkpoint at epoch 50
-CUDA_VISIBLE_DEVICES=0 python train.py --mode eval --checkpoint 50
-
-# Custom config
-python train.py --mode eval --config Configs/MVOFormer.yaml --checkpoint 50
+CUDA_VISIBLE_DEVICES=0 python train.py --mode eval --config Configs/MVOFormer.yaml --checkpoint 50
 ```
+
+Uses checkpoint at `Outputs/{model_name}/checkpoint_epoch_{N}.pth`.
 
 The evaluation:
 1. Loads the specified checkpoint (`checkpoint_epoch_50.pth` in `Outputs/{model_name}/`, e.g. `Outputs/MVOFormer/checkpoint_epoch_50.pth`).
@@ -203,15 +201,12 @@ The evaluation:
 For inference on new data without ground-truth poses:
 
 ```bash
-# Single checkpoint
-python infer.py --config Configs/MVOFormer.yaml --checkpoint_epoch 50 --mode single
-
-# Explicit checkpoint path
 python infer.py --config Configs/MVOFormer.yaml --checkpoint ./Model/MVOFormer.pth --mode single
-
-# Sweep all checkpoints in Outputs/{model_name}/
-python infer.py --config Configs/MVOFormer.yaml --mode all
 ```
+
+Other options:
+- `--checkpoint_epoch 50` — use `Outputs/{model_name}/checkpoint_epoch_50.pth` instead of `--checkpoint`
+- `--mode all` — sweep all `checkpoint_epoch_*.pth` in `Outputs/{model_name}/`
 
 The inference pipeline:
 1. Builds model and loads checkpoint.
