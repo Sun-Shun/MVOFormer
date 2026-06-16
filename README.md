@@ -12,6 +12,9 @@
   <a href="https://github.com/Sun-Shun/MVOFormer">
     <img src="https://img.shields.io/badge/status-accepted-brightgreen" alt="Status">
   </a>
+  <a href="https://arxiv.org/abs/2606.16474">
+    <img src="https://img.shields.io/badge/arXiv-2606.16474-b31b1b" alt="arXiv">
+  </a>
 </p>
 
 <p align="center">
