@@ -5,6 +5,10 @@
 </p>
 
 <p align="center">
+  Jituo Li, <a href="https://sun-shun.github.io/">Shunwang Sun</a>, Jialu Zhang, Xinqi Liu, Jinyao Hu, Zhicheng Lu, Sajad Saeedi, Guodong Lu
+</p>
+
+<p align="center">
   <a href="https://github.com/Sun-Shun/MVOFormer">
     <img src="https://img.shields.io/badge/status-accepted-brightgreen" alt="Status">
   </a>
