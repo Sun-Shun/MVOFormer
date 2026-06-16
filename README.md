@@ -258,40 +258,16 @@ Key parameters in `Configs/MVOFormer.yaml`:
 
 ## Results
 
-### KITTI Odometry (ATE ↓)
+Quantitative comparison (ATE ↓) on four benchmarks. ‡ denotes methods with global optimization / loop closure; † denotes learning-based frame-to-frame methods.
 
-| Method | Avg |
-|--------|:---:|
-| ORB-SLAM3 [1] ‡ | — |
-| DROID-VO [7] ‡ | 54.19 |
-| DPVO [23] ‡ | 53.61 |
-| TartanVO [6] † | 33.94 |
-| DytanVO [15] † | 24.96 |
-| **MVOFormer (Ours) †** | **19.61** |
-
-### TartanAir (ATE ↓)
-
-| Method | Avg |
-|--------|:---:|
-| ORB-SLAM3 [1] ‡ | 14.38 |
-| DROID-VO [7] ‡ | 0.58 |
-| DPVO [23] ‡ | 0.21 |
-| TartanVO [6] † | 3.34 |
-| DytanVO [15] † | 3.90 |
-| **MVOFormer (Ours) †** | **1.36** |
-
-### TUM-RGBD & ETH3D-SLAM (ATE ↓)
-
-| Method | TUM-RGBD | ETH3D-SLAM |
-|--------|:--------:|:----------:|
-| ORB-SLAM3 [1] ‡ | — | — |
-| DROID-VO [7] ‡ | 0.116 | 0.238 |
-| DPVO [23] ‡ | 0.107 | 0.203 |
-| TartanVO [6] † | 0.320 | 0.421 |
-| DytanVO [15] † | 0.259 | 0.364 |
-| **MVOFormer (Ours) †** | **0.187** | **0.276** |
-
-‡ uses global optimization / loop closure &emsp; † learning-based frame-to-frame
+| Method | KITTI | TartanAir | TUM-RGBD | ETH3D-SLAM |
+|--------|:----:|:---------:|:--------:|:----------:|
+| ORB-SLAM3 [1] ‡ | — | 14.38 | — | — |
+| DROID-VO [7] ‡ | 54.19 | 0.58 | 0.116 | 0.238 |
+| DPVO [23] ‡ | 53.61 | 0.21 | 0.107 | 0.203 |
+| TartanVO [6] † | 33.94 | 3.34 | 0.320 | 0.421 |
+| DytanVO [15] † | 24.96 | 3.90 | 0.259 | 0.364 |
+| **MVOFormer (Ours) †** | **19.61** | **1.36** | **0.187** | **0.276** |
 
 ---
 
