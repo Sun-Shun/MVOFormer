@@ -28,6 +28,8 @@
 
 In this work, we propose **MVOFormer**, a novel transformer framework for robust monocular visual odometry. Our architecture features a **Flow-Semantic Dual Branch Encoder** that synergizes dense geometric motion cues with object-centric semantic priors, explicitly distinguishing static structures from dynamic distractors. These representations are then fused by an **Iterative Multimodal Decoder**, enabling coarse-to-fine pose refinement while dynamically suppressing attention on unreliable regions.
 
+We also reproduce [TartanVO](https://github.com/Sun-Shun/OpenTartanVO) as a strong baseline and release the open-source implementation.
+
 <p align="center">
   <img src="assets/MVOFormer.gif" alt="MVOFormer Demo" width="80%">
   <br>
@@ -269,6 +271,33 @@ Quantitative comparison (ATE ↓) on four benchmarks. ‡ denotes methods with g
 | TartanVO [6] † | 33.94 | 3.34 | 0.320 | 0.421 |
 | DytanVO [15] † | 24.96 | 3.90 | 0.259 | 0.364 |
 | **MVOFormer (Ours) †** | **19.61** | **1.36** | **0.187** | **0.276** |
+
+---
+
+## References
+
+```bibtex
+@article{wang2024sea,
+  title={SEA-RAFT: Simple, Efficient, Accurate RAFT for Optical Flow},
+  author={Wang, Yihan and Lipson, Lahav and Deng, Jia},
+  journal={arXiv preprint arXiv:2405.14793},
+  year={2024}
+}
+
+@inproceedings{tartanvo2020corl,
+  title     = {TartanVO: A Generalizable Learning-based VO},
+  author    = {Wang, Wenshan and Hu, Yaoyu and Scherer, Sebastian},
+  booktitle = {Conference on Robot Learning (CoRL)},
+  year      = {2020}
+}
+
+@misc{opentartanvo2025,
+  title     = {OpenTartanVO: An Open-Source Reproduction and Engineering Optimization of TartanVO},
+  author    = {Zhang, Jialu and Sun, Shunwang and Xue, Tingxi},
+  year      = {2025},
+  howpublished = {\url{https://github.com/Sun-Shun/OpenTartanVO}}
+}
+```
 
 ---
 
