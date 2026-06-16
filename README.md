@@ -111,8 +111,8 @@ Optical flow can be pre-computed using [SEA-RAFT](https://github.com/princeton-v
 |-------|--------|-----------|
 | DINOv3 backbone | [facebookresearch/dinov3](https://github.com/facebookresearch/dinov3) | `Network/dinov3/weights/` |
 | SEA-RAFT optical flow | [princeton-vl/SEA-RAFT](https://github.com/princeton-vl/SEA-RAFT) | `Network/SeaRAFT/models/` |
-| Stage 1 (flow-only) | Download link TBD | `Model/stage_1_model.pth` |
-| MVOFormer (full) | Download link TBD | `Model/MVOFormer.pth` |
+| Stage 1 (flow-only) | [Google Drive](https://drive.google.com/drive/folders/1WHO0vYpWjK_n0-LU33qb5kUphER06UzI) | `Model/stage_1_model.pth` |
+| MVOFormer (full) | [Google Drive](https://drive.google.com/drive/folders/1WHO0vYpWjK_n0-LU33qb5kUphER06UzI) | `Model/MVOFormer.pth` |
 
 ---
 
