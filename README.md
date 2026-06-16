@@ -154,7 +154,7 @@ CUDA_VISIBLE_DEVICES=0 python train.py --mode train \
 | **Gradient Clipping** | max_norm=1.0 |
 | **Loss** | Weighted translation + rotation regression with uncertainty learning |
 | **Augmentation** | Spatial random crop (scale up to 2.5×), color jitter (brightness/contrast/saturation) |
-| **Datasets** | TartanAir (305K samples) + TartanAir-Shibuya (6.6K ×10 repeat = 311K total) |
+| **Datasets** | TartanAir (305K samples) + TartanAir-Shibuya (×10 repeat) |
 
 ### Checkpoints
 
@@ -162,8 +162,6 @@ During training, the model saves:
 - `checkpoint_epoch_{N}.pth` — every `save_frequency` epochs (default: 5)
 - `checkpoint_best.pth` — epoch with lowest validation loss
 - `checkpoint_final.pth` — latest epoch
-
-DINOv3 backbone and `delta_ref_point` (when `with_pose_refine=False`) are frozen during training.
 
 ---
 
@@ -182,10 +180,10 @@ python train.py --mode eval --config Configs/MVOFormer.yaml --checkpoint 50
 ```
 
 The evaluation:
-1. Loads the specified checkpoint (`checkpoint_epoch_50.pth` in the output directory).
+1. Loads the specified checkpoint (`checkpoint_epoch_50.pth` in `Outputs/{model_name}/`, e.g. `Outputs/MVOFormer/checkpoint_epoch_50.pth`).
 2. Iterates over all test sequences defined in `cfg['dataset']['test_datasets']`.
 3. For each sequence, runs the model frame-by-frame, computes relative poses.
-4. Evaluates trajectory using **ATE** (Absolute Trajectory Error), **scale**, and **KITTI score**.
+4. Evaluates trajectory using **ATE** (Absolute Trajectory Error), **scale**.
 5. Saves trajectory plots as `.png` and estimated poses as `.txt` in `Outputs/results/`.
 6. Reports mean ATE per dataset and overall average.
 
@@ -208,7 +206,7 @@ python infer.py --config Configs/MVOFormer.yaml --checkpoint_epoch 50 --mode sin
 # Explicit checkpoint path
 python infer.py --config Configs/MVOFormer.yaml --checkpoint ./Model/MVOFormer.pth --mode single
 
-# Sweep all checkpoints in output directory
+# Sweep all checkpoints in Outputs/{model_name}/
 python infer.py --config Configs/MVOFormer.yaml --mode all
 ```
 
